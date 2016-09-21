@@ -1,0 +1,107 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+
+<!--
+`t-collapse`
+This element will allow you to collapse content with specific height
+
+@demo demo/index.html 
+-->
+
+<dom-module id="t-collapse">
+  <template>
+    <style include="iron-flex">
+      :host {
+        display: block;
+        font-family: var(--primary-font-family);
+      }
+
+      #container {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        transition: 0.3s ease all;
+        overflow: hidden;
+        -webkit-box-shadow: inset 0px -9px 5px -4px rgba(51,51,51,0.22);
+        -moz-box-shadow: inset 0px -9px 5px -4px rgba(51,51,51,0.22);
+        box-shadow: inset 0px -9px 5px -4px rgba(51,51,51,0.22);
+      }
+      :host([is-open]) #container{
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+      .header,
+      .body{
+        padding: var(--normal-spacing,10px);
+      }
+      .arrow {
+        color: var(--grey-three,#bbbbbb);
+      }
+    </style>
+    <div id="container">
+      <div class="layout horizontal center" on-tap="toggle">
+        <div class="header flex">
+          <content select=".header"></content>
+        </div>
+        <div class="arrow">
+          <iron-icon id="collapseIcon" icon="[[collapseIcon]]"></iron-icon>
+        </div>
+      </div>
+      <div class="body">
+        <content select=".body"></content>
+      </div>  
+    </div>
+    
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 't-collapse',
+
+      properties: {
+
+        /**
+         * Pass the height to collapse the content for.
+        */
+        collapseHeight: {
+          type: Number,
+          value: 100
+        },
+
+        /**
+         * Stores possible values of collapse icons.
+        */
+        collapseIcon: {
+          type: String,
+          value: 'icons:expand-more'
+        },
+
+        isOpen:{
+          type: Boolean,
+          value: false,
+          reflectToAttribute:true,
+          notify:true,
+          observer: '_collapseOpen'
+        }
+      },
+
+      _collapseOpen: function(isOpen){
+        this.$.container.style.maxHeight = !isOpen ? this.collapseHeight + 'px' : '10000px';
+        this.collapseIcon = isOpen ? 'icons:expand-less' : 'icons:expand-more';
+      },
+
+      /**
+      * toggles collapse state
+      */
+      toggle: function() {
+
+          //changing the state with css
+          this.isOpen = !this.isOpen;
+      }
+
+    });
+  </script>
+</dom-module>
