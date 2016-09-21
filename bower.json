@@ -1,6 +1,6 @@
 {
   "name": "t-collapse",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "This element will allow you to collapse content with specific height",
   "main": "t-collapse.html",
   "dependencies": {
