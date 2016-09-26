@@ -23,25 +23,13 @@ This element will allow you to collapse content with specific height
         box-sizing: border-box;
         transition: 0.3s ease all;
         overflow: hidden;
-        -webkit-box-shadow: inset 0px -9px 5px -4px rgba(51,51,51,0.22);
-        -moz-box-shadow: inset 0px -9px 5px -4px rgba(51,51,51,0.22);
-        box-shadow: inset 0px -9px 5px -4px rgba(51,51,51,0.22);
-      }
-      :host([is-open]) #container{
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-      }
-      .header,
-      .body{
-        padding: var(--normal-spacing,10px);
       }
       .arrow {
         color: var(--grey-three,#bbbbbb);
       }
     </style>
-    <div id="container">
-      <div class="layout horizontal center" on-tap="toggle">
+    <div id="container" on-tap="toggle">
+      <div class="layout horizontal center">
         <div class="header flex">
           <content select=".header"></content>
         </div>
@@ -82,11 +70,13 @@ This element will allow you to collapse content with specific height
         isOpen:{
           type: Boolean,
           value: false,
-          reflectToAttribute:true,
-          notify:true,
-          observer: '_collapseOpen'
+          notify:true
         }
       },
+
+      observers: [
+        '_collapseOpen(isOpen,collapseHeight)'
+      ],
 
       _collapseOpen: function(isOpen){
         this.$.container.style.maxHeight = !isOpen ? this.collapseHeight + 'px' : '10000px';
